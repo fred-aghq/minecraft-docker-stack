@@ -1,0 +1,40 @@
+version: '3'
+services:
+  minecraft-server:
+    build:
+      context: ./build/minecraft-server
+    environment:
+      EULA: "true"
+      DIFFICULTY: ${DIFFICULTY}
+      VERSION: ${VERSION}
+      MEMORY: ${MEMORY}
+    tty: true
+    stdin_open: true
+    volumes:
+      - server-data:/data
+    ports:
+      - ${PORT}:25565
+    networks:
+      internal:
+  overviewer:
+    build:
+      context: ./build/overviewer
+    environment:
+      MINECRAFT_VERSION: ${VERSION}
+      RENDER_MAP: ${RENDER_MAP}
+      RENDER_POI: ${RENDER_POI}
+    volumes:
+      - server-data:/home/minecraft/server:ro
+      - overviewer-web:/home/minecraft/render:rw
+  overviewer-web:
+    image: nginx
+    volumes:
+      - overviewer-web:/usr/share/nginx/html:ro
+    ports:
+      - 8080:80
+networks:
+  internal:
+volumes:
+  shared:
+  overviewer-web:
+  server-data:
