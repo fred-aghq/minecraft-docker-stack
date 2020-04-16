@@ -34,6 +34,9 @@ services:
   backup:
     build:
       context: ./build/backup
+    volumes:
+      - ${BACKUP_HOST_PATH}:/target
+      - server-data:/source/minecraft-server
 volumes:
   shared:
   overviewer-web:
