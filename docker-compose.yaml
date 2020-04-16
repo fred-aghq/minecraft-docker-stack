@@ -27,7 +27,8 @@ services:
       - server-data:/home/minecraft/server:ro
       - overviewer-web:/home/minecraft/render:rw
   overviewer-web:
-    image: nginx
+    build:
+      context: ./build/overviewer-web
     volumes:
       - overviewer-web:/usr/share/nginx/html:ro
     ports:
