@@ -17,6 +17,8 @@ Out of the box, with a couple of commands you get:
 - A container running [Overviewer](https://overviewer.org/) on demand (`overviewer`), capable of generating a google maps style HTML static site render of the 
 minecraft server's overworld.
 - An Nginx container (`overviewer-web`) pre-configured to serve the overviewer-rendered map over HTTP.
+- All running on docker volumes (minimal/no bind mounting to host)
+- A basic backup container (alpine/bash script) that copies your world and overviewer render files to the host filesystem.
 
 > **PLEASE NOTE: At present, the server world and all associated data is stored in docker volumes. If the volumes are 
 pruned or reset (in Docker Desktop for example) the world, everything will be lost. You can probably copy the world data from the 
@@ -94,3 +96,27 @@ docker-compose run overviewer
 
 Once that's done running, you can open a browser and navigate to `localhost:8080` (or your host's IP and/or port you 
 specified in `.env`).
+
+## Running a backup
+The backup container is very basic at present, but provides a sort of temporary "bridge" between the host filesystem and 
+the server data volume.
+
+The container runs on-demand, i.e. it starts, runs the backup, and is destroyed.
+
+This means you can set up a cron job or scheduled task to run it, but that is currently up to you.
+
+Otherwise, it can be run manually at will.
+
+> At the time of writing, the backup container will wipe out the previous backup before running its backup. 
+> I aim to fix this in a later release: https://github.com/fred-aghq/minecraft-docker-stack/issues/16
+>
+> For now, **BACKUP ANYTHING YOU WANT TO KEEP** before running a new backup. 
+
+To run a backup:
+```
+docker-compose run backup
+```
+
+Let it do its thing, and you'll see `minecraft-server` and `overviewer-web` directories appear in `./data`
+
+The `BACKUP_HOST_PATH` can be modified to change where the backups are copied to on the host filesystem.
