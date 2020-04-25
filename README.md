@@ -21,8 +21,7 @@ minecraft server's overworld.
 - A basic backup container (alpine/bash script) that copies your world and overviewer render files to the host filesystem.
 
 > **PLEASE NOTE: At present, the server world and all associated data is stored in docker volumes. If the volumes are 
-pruned or reset (in Docker Desktop for example) the world, everything will be lost. You can probably copy the world data from the 
-server container with `docker cp`. There is an issue raised for the developer to alleviate this risk: https://github.com/fred-aghq/minecraft-docker-stack/issues/1**
+pruned or reset (in Docker Desktop for example) the world, everything will be lost. A container is provided in this repo that can be run to back up the world and overviewer render to your host filesystem. See the "Running A Backup" section below**
 
 ## What do I need?
 - Docker installed on your intended host system(s).
