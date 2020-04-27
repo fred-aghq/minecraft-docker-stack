@@ -4,7 +4,7 @@ services:
     build:
       context: ./build/minecraft-server
     environment:
-      EULA: "true"
+      EULA: ${EULA}
       DIFFICULTY: ${DIFFICULTY}
       VERSION: ${MINECRAFT_VERSION}
       MEMORY: ${MINECRAFT_SERVER_MEMORY}
